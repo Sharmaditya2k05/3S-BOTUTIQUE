@@ -62,8 +62,8 @@ export default function SareesListing() {
     if (filters.available) params.set("available", "true");
 
     api
-      .get<Product[]>(`/products?${params.toString()}`)
-      .then((res) => setProducts(res))
+      .get<Product[] | { products: Product[] }>(`/products?${params.toString()}`)
+      .then((res) => setProducts(Array.isArray(res) ? res : res.products ?? []))
       .finally(() => setLoading(false));
   }, [searchParams]);
 

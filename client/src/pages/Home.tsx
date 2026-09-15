@@ -61,9 +61,11 @@ export default function Home() {
       api.get<Product[]>("/products?newArrival=true&sort=newest"),
     ])
       .then(([cats, feat, arr]) => {
-        setCategories(cats.slice(0, 6));
-        setFeatured(feat.slice(0, 8));
-        setNewArrivals(arr.slice(0, 8));
+        setCategories(Array.isArray(cats) ? cats.slice(0, 6) : []);
+        const featList = Array.isArray(feat) ? feat : (feat as any).products ?? [];
+        const arrList = Array.isArray(arr) ? arr : (arr as any).products ?? [];
+        setFeatured(featList.slice(0, 8));
+        setNewArrivals(arrList.slice(0, 8));
       })
       .finally(() => setLoading(false));
   }, []);
