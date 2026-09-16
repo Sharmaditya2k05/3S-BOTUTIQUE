@@ -86,7 +86,7 @@ export default function AdminLogin() {
         </form>
 
         <p className="mt-6 text-center text-xs text-warmgray">
-          Demo credentials: admin@3ssaree.com / Boutique@123
+          Contact your administrator for login credentials.
         </p>
       </div>
     </div>

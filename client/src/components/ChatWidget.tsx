@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { useState, useRef, useEffect, FormEvent } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useSettings } from "../context/SettingsContext";

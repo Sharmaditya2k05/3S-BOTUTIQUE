@@ -20,9 +20,13 @@ function ensureDB(): void {
     const dir = path.dirname(DB_PATH);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
-    const email = process.env.ADMIN_EMAIL || "admin@3ssaree.com";
-    const pw = process.env.ADMIN_PASSWORD || "Boutique@123";
+    const email = process.env.ADMIN_EMAIL;
+    const pw = process.env.ADMIN_PASSWORD;
     const name = process.env.ADMIN_NAME || "Boutique Admin";
+    if (!email || !pw) {
+      console.error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in .env");
+      process.exit(1);
+    }
     const now = new Date().toISOString();
     const cats = [
       "Banarasi Silk", "Kanjivaram Silk", "Organza", "Chiffon",
@@ -100,7 +104,7 @@ function ensureDB(): void {
     };
 
     fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), "utf-8");
-    console.log(`Database initialized. Admin: ${email}`);
+    console.log("Database initialized.");
   }
 }
 

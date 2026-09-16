@@ -407,9 +407,9 @@ const db: DBShape = {
   admins: [
     {
       id: nanoid(10),
-      email: "admin@3ssaree.com",
-      passwordHash: bcrypt.hashSync("Boutique@123", 10),
-      name: "Boutique Admin",
+      email: process.env.ADMIN_EMAIL || "admin@3ssaree.com",
+      passwordHash: bcrypt.hashSync(process.env.ADMIN_PASSWORD || "changeme", 10),
+      name: process.env.ADMIN_NAME || "Boutique Admin",
     },
   ],
   reviews: [],
@@ -424,4 +424,4 @@ fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
 fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2), "utf-8");
 
 console.log(`Seeded ${products.length} products across ${categories.length} categories.`);
-console.log("Admin login -> email: admin@3ssaree.com | password: Boutique@123");
+console.log("Admin login uses credentials from .env (ADMIN_EMAIL / ADMIN_PASSWORD)");

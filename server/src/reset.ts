@@ -86,9 +86,9 @@ const db: DBShape = {
   admins: [
     {
       id: nanoid(10),
-      email: "admin@3ssaree.com",
-      passwordHash: bcrypt.hashSync("Boutique@123", 10),
-      name: "Boutique Admin",
+      email: process.env.ADMIN_EMAIL || "admin@3ssaree.com",
+      passwordHash: bcrypt.hashSync(process.env.ADMIN_PASSWORD || "changeme", 10),
+      name: process.env.ADMIN_NAME || "Boutique Admin",
     },
   ],
   reviews: [],
@@ -114,5 +114,4 @@ console.log("Reset complete — catalog is empty and ready for real data.");
 console.log(`Created ${categories.length} starter categories (no products, no demo photos).`);
 console.log("IMPORTANT: go to Admin > Settings and set your real WhatsApp number, phone,");
 console.log("email, address and hero photo before sharing the site with customers.");
-console.log("Admin login -> email: admin@3ssaree.com | password: Boutique@123");
-console.log("Change this password before going live.");
+console.log("Admin login uses credentials from .env (ADMIN_EMAIL / ADMIN_PASSWORD)");
