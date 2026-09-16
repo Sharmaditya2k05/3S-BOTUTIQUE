@@ -10,7 +10,7 @@ const router = Router();
 router.get("/", (req: Request, res: Response) => {
   const db = readDB();
   const admin = req.query.admin === "true" && isAdmin(req);
-  const posts = db.blog
+  const posts = (db.blog || [])
     .filter((p) => admin || p.isPublished)
     .sort(
       (a, b) =>

@@ -87,6 +87,7 @@ rm -rf "$APP_DIR/server/public"
 cp -r "$APP_DIR/client/dist" "$APP_DIR/server/public"
 
 cd "$APP_DIR/server"
+npm install typescript --no-save 2>&1 | tail -1
 npx tsc 2>&1 | tail -1 || true
 
 echo "     Build complete."

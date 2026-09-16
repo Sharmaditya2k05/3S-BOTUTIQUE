@@ -200,7 +200,7 @@ export default function AdminProducts() {
             </thead>
             <tbody>
               {filtered.map((p) => {
-                const inv = INVENTORY_BADGE[p.inventoryStatus] || INVENTORY_BADGE.in_stock;
+                const inv = INVENTORY_BADGE[p.inventoryStatus] || INVENTORY_BADGE.out_of_stock;
                 return (
                   <tr key={p.id} className="border-b border-charcoal/5">
                     <td className="p-4">

@@ -1,5 +1,4 @@
-import type { JSX } from "react";
-import { useState, useRef, useEffect, FormEvent } from "react";
+import React, { useState, useRef, useEffect, FormEvent } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { useSettings } from "../context/SettingsContext";
 import { getWhatsAppLink } from "../lib/whatsapp";
@@ -12,7 +11,7 @@ interface Message {
 
 function formatMarkdown(text: string) {
   const lines = text.split("\n");
-  const result: (string | JSX.Element)[] = [];
+  const result: (string | React.JSX.Element)[] = [];
   let key = 0;
   let listItems: string[] = [];
 
@@ -29,7 +28,7 @@ function formatMarkdown(text: string) {
   }
 
   function formatInline(line: string) {
-    const parts: (string | JSX.Element)[] = [];
+    const parts: (string | React.JSX.Element)[] = [];
     let k = 0;
     const regex = /\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|\*([^*\n]+)\*|`([^`]+)`/g;
     let lastIdx = 0;
