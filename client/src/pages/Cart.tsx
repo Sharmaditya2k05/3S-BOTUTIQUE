@@ -81,6 +81,7 @@ export default function Cart() {
             ₹{totalPrice.toLocaleString("en-IN")}
           </span>
         </div>
+        <p className="mt-2 text-xs text-warmgray">₹100 extra for Cash on Delivery</p>
       </div>
 
       <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">

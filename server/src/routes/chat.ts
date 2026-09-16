@@ -88,7 +88,7 @@ HOW TO ORDER:
 2. Add items to your cart or wishlist
 3. Click "Order via WhatsApp" — this sends your cart details directly to our WhatsApp
 4. We confirm availability, share photos/videos, and arrange delivery
-5. Payment is handled directly (UPI, bank transfer, or COD depending on location)
+5. Payment: UPI, bank transfer, or COD (Cash on Delivery has ₹100 extra charge)
 
 GUIDELINES:
 - Be warm, helpful, knowledgeable, and conversational — like a trusted saree advisor

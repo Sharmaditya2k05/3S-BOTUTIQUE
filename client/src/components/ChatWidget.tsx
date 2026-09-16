@@ -9,6 +9,61 @@ interface Message {
   redirectToWhatsApp?: boolean;
 }
 
+function formatMarkdown(text: string) {
+  const lines = text.split("\n");
+  const result: (string | JSX.Element)[] = [];
+  let key = 0;
+  let listItems: string[] = [];
+
+  function flushList() {
+    if (listItems.length === 0) return;
+    result.push(
+      <ul key={key++} className="my-1 ml-4 list-disc space-y-0.5">
+        {listItems.map((item, i) => (
+          <li key={i}>{formatInline(item)}</li>
+        ))}
+      </ul>
+    );
+    listItems = [];
+  }
+
+  function formatInline(line: string) {
+    const parts: (string | JSX.Element)[] = [];
+    let k = 0;
+    const regex = /\*\*\*([^*]+)\*\*\*|\*\*([^*]+)\*\*|\*([^*\n]+)\*|`([^`]+)`/g;
+    let lastIdx = 0;
+    let m;
+    while ((m = regex.exec(line)) !== null) {
+      if (m.index > lastIdx) parts.push(line.slice(lastIdx, m.index));
+      if (m[1]) parts.push(<strong key={k++}><em>{m[1]}</em></strong>);
+      else if (m[2]) parts.push(<strong key={k++}>{m[2]}</strong>);
+      else if (m[3]) parts.push(<em key={k++}>{m[3]}</em>);
+      else if (m[4]) parts.push(<code key={k++} className="rounded bg-black/10 px-1 py-0.5 text-xs">{m[4]}</code>);
+      lastIdx = m.index + m[0].length;
+    }
+    if (lastIdx < line.length) parts.push(line.slice(lastIdx));
+    return parts;
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const bulletMatch = line.match(/^[\s]*[-*•]\s+(.+)/);
+    const numberedMatch = line.match(/^[\s]*\d+[.)]\s+(.+)/);
+
+    if (bulletMatch) {
+      listItems.push(bulletMatch[1]);
+    } else if (numberedMatch) {
+      listItems.push(numberedMatch[1]);
+    } else {
+      flushList();
+      if (i > 0 && result.length > 0) result.push(<br key={key++} />);
+      if (line.trim()) result.push(<span key={key++}>{formatInline(line)}</span>);
+    }
+  }
+  flushList();
+  return result;
+}
+
 export default function ChatWidget() {
   const { settings } = useSettings();
   const [open, setOpen] = useState(false);
@@ -56,12 +111,20 @@ export default function ChatWidget() {
       });
 
       const data = await res.json();
+      const rawReply: string = data.reply ?? "Sorry, something went wrong.";
+      const hasWhatsAppLink = /wa\.me\//i.test(rawReply);
+      const cleanReply = rawReply
+        .replace(/\[([^\]]*)\]\(https?:\/\/wa\.me\/[^)]*\)/gi, "")
+        .replace(/\s*https?:\/\/wa\.me\/\S+/gi, "")
+        .replace(/👉\s*/g, "")
+        .replace(/\n{3,}/g, "\n\n")
+        .trim();
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: data.reply ?? "Sorry, something went wrong.",
-          redirectToWhatsApp: data.redirectToWhatsApp,
+          content: cleanReply,
+          redirectToWhatsApp: data.redirectToWhatsApp || hasWhatsAppLink,
         },
       ]);
     } catch {
@@ -123,7 +186,7 @@ export default function ChatWidget() {
                         : "rounded-tl-sm bg-gray-100 text-charcoal"
                     }`}
                   >
-                    {msg.content}
+                    {msg.role === "assistant" ? formatMarkdown(msg.content) : msg.content}
                   </div>
                   {msg.redirectToWhatsApp && (
                     <a

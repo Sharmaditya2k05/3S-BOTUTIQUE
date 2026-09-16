@@ -270,6 +270,7 @@ export default function ProductDetail() {
               </>
             )}
           </div>
+          <p className="mt-1.5 text-xs text-warmgray">₹100 extra for Cash on Delivery</p>
 
           <span
             className={`mt-3 inline-block px-2.5 py-1 text-xs font-medium ${

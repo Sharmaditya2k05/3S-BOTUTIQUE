@@ -132,6 +132,7 @@ export default function ProductCard({
             </span>
           )}
         </div>
+        <p className="text-[11px] text-warmgray">₹100 extra for Cash on Delivery</p>
       </div>
     </div>
   );
